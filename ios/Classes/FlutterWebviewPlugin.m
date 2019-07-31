@@ -69,6 +69,10 @@ static NSString *const CHANNEL_NAME = @"flutter_webview_plugin";
     } else if ([@"reload" isEqualToString:call.method]) {
         [self reload];
         result(nil);
+    } else if ([@"canGoBack" isEqualToString:call.method]) {
+        result([NSNumber numberWithBool:[self canGoBack]]);
+    } else if ([@"canGoForward" isEqualToString:call.method]) {
+        result([NSNumber numberWithBool:[self canGoForward]]);
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -214,12 +218,12 @@ static NSString *const CHANNEL_NAME = @"flutter_webview_plugin";
     }
 }
 - (void)back {
-    if (self.webview != nil) {
+    if ([self.webview canGoBack]) {
         [self.webview goBack];
     }
 }
 - (void)forward {
-    if (self.webview != nil) {
+    if ([self.webview canGoBack]) {
         [self.webview goForward];
     }
 }
@@ -228,10 +232,23 @@ static NSString *const CHANNEL_NAME = @"flutter_webview_plugin";
         [self.webview reload];
     }
 }
-
 - (void)cleanCookies {
     [[NSURLSession sharedSession] resetWithCompletionHandler:^{
         }];
+}
+- (bool)canGoBack {
+    if (self.webview != nil) {
+        return [self.webview canGoBack];
+    } else {
+        return NO;
+    }
+}
+- (bool)canGoForward {
+    if (self.webview != nil) {
+        return [self.webview canGoForward];
+    } else {
+        return NO;
+    }
 }
 
 #pragma mark -- WkWebView Delegate

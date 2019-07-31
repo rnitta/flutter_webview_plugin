@@ -303,7 +303,7 @@ class WebviewManager {
     * Navigates forward on the Webview.
     */
     void forward(MethodCall call, MethodChannel.Result result) {
-        if (webView != null && webView.canGoForward()) {
+        if (webView.canGoForward()) {
             webView.goForward();
         }
     }
@@ -315,13 +315,13 @@ class WebviewManager {
     * Checks if going back on the Webview is possible.
     */
     boolean canGoBack() {
-        return webView.canGoBack();
+        return webView != null && webView.canGoBack();
     }
     /**
     * Checks if going forward on the Webview is possible.
     */
     boolean canGoForward() {
-        return webView.canGoForward();
+        return webView != null && webView.canGoForward();
     }
     void hide(MethodCall call, MethodChannel.Result result) {
         if (webView != null) {
